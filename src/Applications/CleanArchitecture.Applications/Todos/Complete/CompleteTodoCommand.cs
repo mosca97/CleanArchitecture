@@ -3,10 +3,7 @@
 
 using CleanArchitecture.Applications.Abstractions;
 
-namespace CleanArchitecture.Applications.Todo.Create
+namespace CleanArchitecture.Applications.Todos.Complete
 {
-    public class CreateTodoCommand : ICommand<Guid>
-    {
-        public required string Description { get; set; }
-    }
+    public sealed record CompleteTodoCommand(Guid Id) : ICommand;
 }

@@ -3,7 +3,10 @@
 
 using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Api.Models.Todos.Requests;
-using CleanArchitecture.Applications.Todo.Create;
+using CleanArchitecture.Applications.Todos.Complete;
+using CleanArchitecture.Applications.Todos.Create;
+using CleanArchitecture.Applications.Todos.Get;
+using CleanArchitecture.Applications.Todos.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,21 +17,26 @@ namespace CleanArchitecture.Api.Controllers
     public class TodoController(ISender sender)
         : ControllerBase
     {
-        // GET: api/<TodoController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IResult> Get(CancellationToken cancellationToken)
         {
-            return new string[] { "value1", "value2" };
+            var command = new GetTodosQuery();
+
+            var result = await sender.Send(command, cancellationToken);
+
+            return result.Match(Results.Ok, CustomeResults.Problem);
         }
 
-        // GET api/<TodoController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IResult> Get(Guid id, CancellationToken cancellationToken)
         {
-            return "value";
+            var command = new GetTodoByIdQuery(id);
+
+            var result = await sender.Send(command, cancellationToken);
+
+            return result.Match(Results.Ok, CustomeResults.Problem);
         }
 
-        // POST api/<TodoController>
         [HttpPost]
         public async Task<IResult> Post([FromBody] CreateTodoRequest request, CancellationToken cancellationToken)
         {
@@ -39,16 +47,14 @@ namespace CleanArchitecture.Api.Controllers
             return result.Match(Results.Ok, CustomeResults.Problem);
         }
 
-        // PUT api/<TodoController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{id}/complete")]
+        public async Task<IResult> Put(Guid id, CancellationToken cancellationToken)
         {
-        }
+            var command = new CompleteTodoCommand(id);
 
-        // DELETE api/<TodoController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var result = await sender.Send(command, cancellationToken);
+
+            return result.Match(Results.NoContent, CustomeResults.Problem);
         }
     }
 }

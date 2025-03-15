@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Applications\CleanArchitecture.Applications.Todo\CleanArchitecture.Applications.Todo.csproj" />
     <ProjectReference Include="..\..\Applications\CleanArchitecture.Applications\CleanArchitecture.Applications.csproj" />
     <ProjectReference Include="..\..\Infrastructures\CleanArchitecture.Infrastructures\CleanArchitecture.Infrastructures.csproj" />
   </ItemGroup>

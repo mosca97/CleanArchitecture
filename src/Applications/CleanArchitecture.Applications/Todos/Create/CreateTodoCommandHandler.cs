@@ -6,9 +6,9 @@ using CleanArchitecture.Applications.Data;
 using CleanArchitecture.Domains.Core;
 using CleanArchitecture.Domains.Todo;
 
-namespace CleanArchitecture.Applications.Todo.Create
+namespace CleanArchitecture.Applications.Todos.Create
 {
-    public class CreateTodoCommandHandler(IApplicationDbContext context)
+    internal sealed class CreateTodoCommandHandler(IApplicationDbContext context)
         : ICommandHandler<CreateTodoCommand, Guid>
     {
         public async Task<Result<Guid>> Handle(CreateTodoCommand request, CancellationToken cancellationToken)
