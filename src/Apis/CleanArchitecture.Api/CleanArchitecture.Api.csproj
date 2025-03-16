@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Applications\CleanArchitecture.Applications.Budget\CleanArchitecture.Applications.Budget.csproj" />
     <ProjectReference Include="..\..\Applications\CleanArchitecture.Applications\CleanArchitecture.Applications.csproj" />
     <ProjectReference Include="..\..\Infrastructures\CleanArchitecture.Infrastructures\CleanArchitecture.Infrastructures.csproj" />
   </ItemGroup>
