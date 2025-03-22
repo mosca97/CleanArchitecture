@@ -9,9 +9,9 @@ using CleanArchitecture.Domains.Core;
 namespace CleanArchitecture.Applications.Budget.Catergories.Create
 {
     internal sealed class CreateCategoryCommandHandler(IApplicationDbContext context)
-        : ICommandHandler<CreateCategoryCommand, int>
+        : ICommandHandler<CreateCategoryCommand, long>
     {
-        public async Task<Result<int>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Result<long>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = new ExpenseCategory()
             {

@@ -5,7 +5,7 @@ namespace CleanArchitecture.Applications.Budget.Catergories.Get
 {
     public class ExpenseCategoryResponse
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
     }
 }

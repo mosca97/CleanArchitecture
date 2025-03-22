@@ -5,6 +5,8 @@ using CleanArchitecture.Applications.Abstractions;
 using CleanArchitecture.Applications.Data;
 using CleanArchitecture.Domains.Core;
 using CleanArchitecture.Domains.Todo;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Applications.Todos.Create
 {
@@ -25,6 +27,44 @@ namespace CleanArchitecture.Applications.Todos.Create
             await context.SaveChangesAsync(cancellationToken);
 
             return todo.Id;
+        }
+    }
+
+    public abstract class GenericCreateCommand<TCommand, TDomain>(DbContext context)
+        : ICommandHandler<TCommand>
+        where TCommand : ICommand
+        where TDomain : class, new()
+    {
+        public async Task<Result> Handle(TCommand request, CancellationToken cancellationToken)
+        {
+            var domainModel = request.Adapt<TDomain>();
+
+            var set = context.Set<TDomain>();
+
+            set.Add(domainModel);
+
+            await context.SaveChangesAsync(cancellationToken);
+
+            return Result.Success();
+        }
+    }
+
+    public abstract class GenericCreateCommand<TCommand, TDomain, TResponse>(DbContext context)
+        : ICommandHandler<TCommand, TResponse>
+        where TCommand : ICommand<TResponse>
+        where TDomain : EntityBase<TResponse>
+    {
+        public async Task<Result<TResponse>> Handle(TCommand request, CancellationToken cancellationToken)
+        {
+            var domainModel = request.Adapt<TDomain>();
+
+            var set = context.Set<TDomain>();
+
+            set.Add(domainModel);
+
+            await context.SaveChangesAsync(cancellationToken);
+
+            return domainModel.Id;
         }
     }
 }

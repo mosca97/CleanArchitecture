@@ -3,7 +3,9 @@
 
 using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Applications.Budget.Catergories.Create;
+using CleanArchitecture.Applications.Budget.Catergories.Delete;
 using CleanArchitecture.Applications.Budget.Catergories.Get;
+using CleanArchitecture.Applications.Budget.Catergories.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +15,11 @@ namespace CleanArchitecture.Api.Controllers
 {
     public class PostRequest
     {
+        public string Name { get; set; }
+    }
+    public class PatchRequest
+    {
+        public long Id { get; set; }
         public string Name { get; set; }
     }
 
@@ -54,15 +61,25 @@ namespace CleanArchitecture.Api.Controllers
         }
 
         // PUT api/<ExpenseCategoryController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPatch]
+        public async Task<IResult> Patch([FromBody] PatchRequest request, CancellationToken cancellationToken)
         {
+            var command = new UpdateCategoryCommand(request.Id, request.Name);
+
+            var result = await sender.Send(command, cancellationToken);
+
+            return result.Match(Results.NoContent, CustomeResults.Problem);
         }
 
         // DELETE api/<ExpenseCategoryController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IResult> Delete(int id, CancellationToken cancellationToken)
         {
+            var command = new DeleteCategoryCommand(id);
+
+            var result = await sender.Send(command, cancellationToken);
+
+            return result.Match(Results.NoContent, CustomeResults.Problem);
         }
     }
 }

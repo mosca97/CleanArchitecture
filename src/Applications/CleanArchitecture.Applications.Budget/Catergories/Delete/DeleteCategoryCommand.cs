@@ -3,10 +3,7 @@
 
 using CleanArchitecture.Applications.Abstractions;
 
-namespace CleanArchitecture.Applications.Budget.Catergories.Create
+namespace CleanArchitecture.Applications.Budget.Catergories.Delete
 {
-    public sealed class CreateCategoryCommand : ICommand<long>
-    {
-        public required string Name { get; set; }
-    }
+    public sealed record DeleteCategoryCommand(long Id) : ICommand;
 }

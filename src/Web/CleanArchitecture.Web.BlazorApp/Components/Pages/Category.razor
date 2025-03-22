@@ -1,0 +1,103 @@
+﻿@page "/expense-category"
+
+@implements IDisposable
+@rendermode InteractiveServer
+@inject BudgetApiClient BudgetApiClient
+
+<PageTitle>Expense category</PageTitle>
+
+<button class="btn btn-primary" onclick="@New">New</button>
+
+@if (category is not null)
+{
+    <EditForm Model="category" OnSubmit="Save">
+        <InputText @bind-Value="category.Name" />
+        <button type="submit" class="btn btn-success">Save</button>
+    </EditForm>
+}
+else
+{
+    if (categories.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in categories)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="@(() => Edit(item))">Edit</button>
+                            <button class="btn btn-danger" @onclick="@(() => DeleteAsync(item.Id))">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+}
+
+@code {
+    private CancellationTokenSource cts = new();
+
+    List<ExpenseCategory> categories = new List<ExpenseCategory>();
+
+    ExpenseCategory? category = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshDataAsync();
+    }
+
+    public void New()
+    {
+        category = new ExpenseCategory();
+    }
+
+    public void Edit(ExpenseCategory request)
+    {
+        category = request;
+    }
+
+    public async Task DeleteAsync(long id)
+    {
+        await BudgetApiClient.DeleteCategoryAsync(id, cts.Token);
+        await RefreshDataAsync();
+
+        category = null;
+    }
+
+    public async Task Save()
+    {
+        if (category.Id <= 0)
+        {
+            await BudgetApiClient.CreateCategoryAsync(new() { Name = category.Name }, cts.Token);
+        }
+        else
+        {
+            await BudgetApiClient.UpdateCategoryAsync(new() { Id = category.Id, Name = category.Name }, cts.Token);
+        }
+        await RefreshDataAsync();
+
+        category = null;
+    }
+
+    private async Task RefreshDataAsync()
+    {
+        categories = await BudgetApiClient.GetCategoriesAsync(cts.Token);
+    }
+
+    public void Dispose()
+    {
+        cts.Cancel();
+        cts.Dispose();
+    }
+}
