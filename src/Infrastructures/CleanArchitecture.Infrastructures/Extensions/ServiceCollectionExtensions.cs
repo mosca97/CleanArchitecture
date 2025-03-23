@@ -3,24 +3,25 @@
 
 using CleanArchitecture.Applications.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Infrastructures.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configurations)
     {
-        services.AddDatabase();
+        services.AddDatabase(configurations);
 
         return services;
     }
 
-    private static IServiceCollection AddDatabase(this IServiceCollection services)
+    private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configurations)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            options.UseInMemoryDatabase("CleanArchitecture");
+            options.UseSqlServer(configurations.GetConnectionString("Sql"));
         });
 
         services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<ApplicationDbContext>());

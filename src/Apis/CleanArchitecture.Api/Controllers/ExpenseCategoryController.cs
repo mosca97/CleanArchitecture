@@ -24,12 +24,16 @@ namespace CleanArchitecture.Api.Controllers
     }
 
     [Route("api/[controller]")]
+    [ProducesResponseType(typeof(ProblemDetails), 400)] // Bad request
+    [ProducesResponseType(typeof(ProblemDetails), 401)] // Unauthorized
+    [ProducesResponseType(typeof(ProblemDetails), 500)] // Unauthorized
     [ApiController]
     public class ExpenseCategoryController(ISender sender)
         : ControllerBase
     {
         // GET: api/<ExpenseCategoryController>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<ExpenseCategoryResponse>))]
         public async Task<IResult> Get(CancellationToken cancellationToken)
         {
             var query = new GetCategoriesQuery();
@@ -48,6 +52,7 @@ namespace CleanArchitecture.Api.Controllers
 
         // POST api/<ExpenseCategoryController>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
         public async Task<IResult> Post([FromBody] PostRequest request, CancellationToken cancellationToken)
         {
             var command = new CreateCategoryCommand()
@@ -57,11 +62,12 @@ namespace CleanArchitecture.Api.Controllers
 
             var result = await sender.Send(command, cancellationToken);
 
-            return result.Match(Results.Ok, CustomeResults.Problem);
+            return result.Match(Results.Created, CustomeResults.Problem);
         }
 
         // PUT api/<ExpenseCategoryController>/5
         [HttpPatch]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IResult> Patch([FromBody] PatchRequest request, CancellationToken cancellationToken)
         {
             var command = new UpdateCategoryCommand(request.Id, request.Name);
@@ -73,6 +79,7 @@ namespace CleanArchitecture.Api.Controllers
 
         // DELETE api/<ExpenseCategoryController>/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IResult> Delete(int id, CancellationToken cancellationToken)
         {
             var command = new DeleteCategoryCommand(id);

@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using CleanArchitecture.Api.Extensions;
-using CleanArchitecture.Applications.Budget.Expenses.Create;
-using CleanArchitecture.Applications.Budget.Expenses.Get;
+using CleanArchitecture.Applications.Expenses.Create;
+using CleanArchitecture.Applications.Expenses.Get;
 using CleanArchitecture.Domains.Budget.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

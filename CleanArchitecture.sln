@@ -30,10 +30,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Applicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Domains.Budget", "src\Domains\CleanArchitecture.Domains.Budget\CleanArchitecture.Domains.Budget.csproj", "{A41084B0-BFDD-44D4-A5A7-6C118500BF79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Infrastructures.Budget", "src\Infrastructures\CleanArchitecture.Infrastructures.Budget\CleanArchitecture.Infrastructures.Budget.csproj", "{81D559E4-4852-450A-91C6-F33055A49EB2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Applications.Budget", "src\Applications\CleanArchitecture.Applications.Budget\CleanArchitecture.Applications.Budget.csproj", "{5129DB57-C806-4FFD-8986-FDFC87B20725}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{25708AD8-D176-46FE-97C3-7CE218E53D22}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Web.BlazorApp", "src\Web\CleanArchitecture.Web.BlazorApp\CleanArchitecture.Web.BlazorApp.csproj", "{F71B435B-81E1-4870-B8DB-534CD594827F}"
@@ -72,14 +68,6 @@ Global
 		{A41084B0-BFDD-44D4-A5A7-6C118500BF79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A41084B0-BFDD-44D4-A5A7-6C118500BF79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A41084B0-BFDD-44D4-A5A7-6C118500BF79}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81D559E4-4852-450A-91C6-F33055A49EB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81D559E4-4852-450A-91C6-F33055A49EB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81D559E4-4852-450A-91C6-F33055A49EB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81D559E4-4852-450A-91C6-F33055A49EB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5129DB57-C806-4FFD-8986-FDFC87B20725}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5129DB57-C806-4FFD-8986-FDFC87B20725}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5129DB57-C806-4FFD-8986-FDFC87B20725}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5129DB57-C806-4FFD-8986-FDFC87B20725}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F71B435B-81E1-4870-B8DB-534CD594827F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F71B435B-81E1-4870-B8DB-534CD594827F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F71B435B-81E1-4870-B8DB-534CD594827F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -96,8 +84,6 @@ Global
 		{0B156FF3-F464-4D40-8393-1C438DB89294} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{09A29643-8C49-4738-8E60-8E120C5DCEC5} = {D90B6324-8BF9-44D1-AA89-DEC5EEC279AC}
 		{A41084B0-BFDD-44D4-A5A7-6C118500BF79} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{81D559E4-4852-450A-91C6-F33055A49EB2} = {45E84D2A-8ECB-4338-8F08-B5E0196D003D}
-		{5129DB57-C806-4FFD-8986-FDFC87B20725} = {D90B6324-8BF9-44D1-AA89-DEC5EEC279AC}
 		{F71B435B-81E1-4870-B8DB-534CD594827F} = {25708AD8-D176-46FE-97C3-7CE218E53D22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

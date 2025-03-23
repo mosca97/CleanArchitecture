@@ -8,9 +8,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructures;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : DbContext(options), IApplicationDbContext
+public class ApplicationDbContext
+    : DbContext, IApplicationDbContext
 {
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+    {
+    }
+
+    public ApplicationDbContext() { }
+
     public DbSet<TodoItem> TodoItems { get; set; }
 
     public DbSet<Expense> Expenses { get; set; }
@@ -18,4 +25,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Income> Incomes { get; set; }
 
     public DbSet<ExpenseCategory> Categories { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+    }
 }
