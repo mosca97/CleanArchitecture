@@ -26,4 +26,26 @@ internal sealed class BudgetApiClient(HttpClient client)
     {
         var response = await client.DeleteAsync($"api/ExpenseCategory/{id}", cancellationToken);
     }
+
+    public async Task CreateExpenseAsync(ExpenseModel request, CancellationToken cancellationToken = default)
+    {
+        var response = await client.PostAsJsonAsync("api/Expense", request, cancellationToken);
+        var content = await response.Content.ReadAsStringAsync();
+    }
+
+    public async Task<List<ExpenseModel>> GetExpensesAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var response = await client.GetAsync("api/Expense", cancellationToken);
+            var content = await response.Content.ReadAsStringAsync();
+
+            return await client.GetFromJsonAsync<List<ExpenseModel>>("api/Expense", cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
 }

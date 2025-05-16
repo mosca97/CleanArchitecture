@@ -3,6 +3,7 @@
 
 using CleanArchitecture.Web.BlazorApp;
 using CleanArchitecture.Web.BlazorApp.Components;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.AddHttpClient<BudgetApiClient>(client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ApiUrl"]);
 });
+
+builder.Services.AddFluentUIComponents();
 
 var app = builder.Build();
 

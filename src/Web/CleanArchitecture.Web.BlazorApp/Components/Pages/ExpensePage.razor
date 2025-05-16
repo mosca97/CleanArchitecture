@@ -1,0 +1,91 @@
+﻿@page "/"
+
+@rendermode InteractiveServer
+@implements IDisposable
+
+@inject BudgetApiClient BudgetApiClient
+
+<PageTitle>Home</PageTitle>
+
+<FluentGrid>
+    <FluentGridItem xs="12" md="12" lg="12">
+        <FluentButton Appearance="Appearance.Accent">New</FluentButton>
+    </FluentGridItem>
+
+    @if (expense is not null)
+    {
+        <EditForm Model="expense" OnValidSubmit="Save">
+            <DataAnnotationsValidator />
+            <FluentGridItem xs="12" md="12" lg="12">
+                <FluentSelect TOption="ExpenseCategory"
+                Label="Select a category"
+                Items="@categories"
+                Id="people-listbox"
+                Width="200px"
+                Height="250px"
+                Placeholder="Select a category..."
+                OptionValue="@(p => p.Id.ToString())"
+                OptionText="@(p => p.Name)"
+                @bind-Value="@expense.CategoryIdString" />
+                <ValidationMessage For="() => expense.CategoryIdString" />
+            </FluentGridItem>
+            <FluentGridItem xs="12" md="12" lg="12">
+                <FluentNumberField @bind-Value="@expense.Amount">Price</FluentNumberField>
+                <ValidationMessage For="() => expense.Amount" />
+            </FluentGridItem>
+            <FluentGridItem xs="12" md="12" lg="12">
+                <FluentTextField @bind-Value="@expense.Name">Title</FluentTextField>
+                <ValidationMessage For="() => expense.Name" />
+            </FluentGridItem>
+            <FluentGridItem xs="12" md="12" lg="12">
+                <FluentDatePicker Label="Date" @bind-Value="@expense.CreatedAt" />
+            </FluentGridItem>
+            <FluentGridItem xs="12" md="12" lg="12">
+                <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" BackgroundColor="green">Save</FluentButton>
+            </FluentGridItem>
+        </EditForm>
+    }
+    else
+    {
+        
+    }
+</FluentGrid>
+
+@code {
+    private CancellationTokenSource cts = new();
+    List<ExpenseCategory> categories = new List<ExpenseCategory>();
+    ExpenseCategory? selectedCategory;
+
+    ExpenseModel? expense = new();
+    List<ExpenseModel> expenses = new();
+
+    string? SelectedValue;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshDataAsync();
+    }
+    private async Task RefreshDataAsync()
+    {
+        categories = await BudgetApiClient.GetCategoriesAsync();
+        expenses = await BudgetApiClient.GetExpensesAsync();
+    }
+
+    public async Task Save()
+    {
+        try
+        {
+            await BudgetApiClient.CreateExpenseAsync(expense, cts.Token);
+            expense = null;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+    public void Dispose()
+    {
+        cts.Cancel();
+        cts.Dispose();
+    }
+}
