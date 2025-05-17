@@ -18,7 +18,7 @@ public class HiveApiResponse
     public long Id { get; set; }
     public long ApiaryId { get; set; }
     public string Name { get; set; }
-    public string QueeBeeYear { get; set; }
+    public string QueenBeeYear { get; set; }
     public List<NoteApiResponse> Notes { get; set; } = [];
     public List<TreatmentApiResponse> Treatments { get; set; } = [];
 }
