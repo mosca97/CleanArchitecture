@@ -1,16 +1,30 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Text.Json.Serialization;
 using CleanArchitecture.Applications.Abstractions;
 using CleanArchitecture.Applications.Apiaries.Create;
 using CleanArchitecture.Applications.Apiaries.Get;
 using CleanArchitecture.Presentations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.Api.Controllers
 {
-    [Authorize]
+    public class PatchApiaryRequest
+    {
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public long Id { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string Name { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public double? Latitude { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public double? Longitude { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public double? Altitude { get; set; }
+    }
+
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ApiaryController(
@@ -53,6 +67,15 @@ namespace CleanArchitecture.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IResult> GetById(long id, CancellationToken cancellationToken)
+        {
+            return Results.Ok(apiaries.FirstOrDefault(a => a.Id == id));
+        }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiaryApiResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IResult> PatchById(long id, PatchApiaryRequest request, CancellationToken cancellationToken)
         {
             return Results.Ok(apiaries.FirstOrDefault(a => a.Id == id));
         }
